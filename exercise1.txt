@@ -1,0 +1,25 @@
+import re
+
+def read_and_replace(filename):
+    with open(filename, 'r') as f:
+        text = f.read()
+
+    # 使用正则表达式找到所有"terrible"并计数
+    matches = [m for m in re.finditer(r'\bterrible\b', text, re.IGNORECASE)]
+    print(f"The word 'terrible' appears {len(matches)} times in the file.")
+
+    # 替换"terrible"
+    new_text = text
+    for idx, match in enumerate(matches[::-1]):  # 反向遍历，这样替换时不会影响后面的索引
+        start, end = match.start(), match.end()
+        replace_word = 'pathetic' if idx % 2 == 0 else 'marvellous'
+        new_text = new_text[:start] + replace_word + new_text[end:]
+
+    # 保存结果到新文件
+    with open("result.txt", "w") as f:
+        f.write(new_text)
+
+    print("替换完成，结果已保存至 result.txt")
+
+if __name__ == "__main__":
+    read_and_replace("file_to_read.txt")
